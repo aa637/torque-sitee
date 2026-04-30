@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>トルク株式会社 | TORQUE Co., Ltd.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f4f0;
+      --accent: #c8a84b;
+      --accent-dark: #9e7e2c;
+      --gray: #888;
+      --light-gray: #e8e6e0;
+      --section-pad: clamp(60px, 10vw, 120px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 5%;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: transform 0.3s;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 5% 80px 8%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
+      color: var(--white);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title .accent { color: var(--accent); }
+
+    .hero-subtitle {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      color: rgba(245,244,240,0.6);
+      font-style: italic;
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--black);
+      padding: 16px 40px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      align-self: flex-start;
+    }
+
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 30%);
+      z-index: 1;
+    }
+
+    .hero-image-bg {
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #1a1a2e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SVG illustration for hero */
+    .hero-illustration {
+      width: 80%;
+      max-width: 400px;
+      opacity: 0.85;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 8%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(245,244,240,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse { 0%,100%{width:40px;opacity:1} 50%{width:60px;opacity:0.5} }
+
+    /* ── SECTION BASE ── */
+    section { padding: var(--section-pad) 8%; }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1;
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    #about .section-title { color: var(--white); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .about-info table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .about-info tr {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .about-info td {
+      padding: 14px 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      vertical-align: top;
+    }
+
+    .about-info td:first-child {
+      width: 120px;
+      color: var(--accent);
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .philosophy-box {
+      border-left: 3px solid var(--accent);
+      padding: 24px 28px;
+      background: rgba(200,168,75,0.06);
+      margin-top: 32px;
+    }
+
+    .philosophy-box p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: rgba(245,244,240,0.85);
+    }
+
+    .map-container {
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 340px;
+      border: none;
+      display: block;
+      filter: grayscale(0.3);
+    }
+
+    .map-address {
+      padding: 16px;
+      background: rgba(255,255,255,0.04);
+      font-size: 0.8rem;
+      color: rgba(245,244,240,0.6);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--white); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--black);
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 40px 32px;
+      transition: background 0.3s, color 0.3s;
+      cursor: default;
+    }
+
+    .service-card:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 24px;
+    }
+
+    .service-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .service-card p {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      opacity: 0.75;
+    }
+
+    /* ── STRENGTHS ── */
+    #strengths {
+      background: var(--accent);
+      color: var(--black);
+    }
+
+    #strengths .section-label { color: var(--black); opacity: 0.5; }
+    #strengths .section-title { color: var(--black); }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .badge {
+      background: var(--black);
+      color: var(--white);
+      padding: 40px 32px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .badge:hover { transform: translateY(-6px); }
+
+    .badge-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+
+    .badge-label {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .badge-desc {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 8px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--black); color: var(--white); }
+    #contact .section-title { color: var(--white); }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-info p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(245,244,240,0.7);
+      margin-bottom: 32px;
+    }
+
+    .contact-tel {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
+    .contact-tel-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,244,240,0.4);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white);
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group select option { background: #1a1a1a; }
+
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .btn-submit {
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      padding: 16px 40px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.2s, transform 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .btn-submit:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      color: rgba(245,244,240,0.4);
+      padding: 40px 8%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+    }
+
+    .footer-info {
+      text-align: center;
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 120px 8% 80px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .badges-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-info { order: -1; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 60px 5%; }
+      footer { padding: 32px 5%; }
+      .hero-left { padding: 110px 5% 70px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">TORQUE</a>
+  <ul class="nav-links">
+    <li><a href="#about">会社概要</a></li>
+    <li><a href="#services">事業内容</a></li>
+    <li><a href="#strengths">強み・実績</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left fade-up">
+    <p class="hero-eyebrow">Fastening Solutions & Distribution</p>
+
+<h1 class="hero-title">
+  SUPPORTING<br>
+  INDUSTRY<br>
+  WITH <span class="accent">TORQUE</span>
+</h1>
+
+<p class="hero-subtitle">
+  豊富な商品ラインナップと確かな流通力で、<br>
+  ものづくりを支えます。
+</p>
+    <a href="#contact" class="btn-primary">お問い合わせへ →</a>
+    <div class="scroll-hint" style="position:static;margin-top:48px;">
+      <span class="scroll-line"></span>
+      <span>SCROLL</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-bg">
+      <!-- SVG Gear Illustration -->
+      <svg class="hero-illustration" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c8a84b" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#c8a84b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="200" cy="200" r="180" fill="url(#glow)"/>
+        <!-- Large gear -->
+        <g transform="translate(200,200)" style="animation: spin 20s linear infinite; transform-origin: 0 0;">
+          <circle r="80" fill="none" stroke="#c8a84b" stroke-width="8" opacity="0.6"/>
+          <circle r="40" fill="none" stroke="#c8a84b" stroke-width="4" opacity="0.4"/>
+          <!-- Gear teeth -->
+          <g opacity="0.7">
+            <rect x="-6" y="-96" width="12" height="20" fill="#c8a84b" rx="2"/>
+            <rect x="-6" y="76" width="12" height="20" fill="#c8a84b" rx="2"/>
+            <rect x="76" y="-6" width="20" height="12" fill="#c8a84b" rx="2"/>
+            <rect x="-96" y="-6" width="20" height="12" fill="#c8a84b" rx="2"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(45)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(90)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(135)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(180)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(225)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(270)"/>
+            <rect x="49" y="-74" width="12" height="20" fill="#c8a84b" rx="2" transform="rotate(315)"/>
+          </g>
+          <!-- Spokes -->
+          <line x1="0" y1="-70" x2="0" y2="70" stroke="#c8a84b" stroke-width="3" opacity="0.3"/>
+          <line x1="-70" y1="0" x2="70" y2="0" stroke="#c8a84b" stroke-width="3" opacity="0.3"/>
+          <line x1="-50" y1="-50" x2="50" y2="50" stroke="#c8a84b" stroke-width="3" opacity="0.3"/>
+          <line x1="50" y1="-50" x2="-50" y2="50" stroke="#c8a84b" stroke-width="3" opacity="0.3"/>
+          <circle r="12" fill="#c8a84b" opacity="0.9"/>
+        </g>
+        <!-- Small gear -->
+        <g transform="translate(300,120)" style="animation: spin-r 12s linear infinite; transform-origin: 0 0;">
+          <circle r="40" fill="none" stroke="#c8a84b" stroke-width="5" opacity="0.4"/>
+          <circle r="18" fill="none" stroke="#c8a84b" stroke-width="2" opacity="0.3"/>
+          <rect x="-4" y="-48" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5"/>
+          <rect x="-4" y="34" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5"/>
+          <rect x="34" y="-4" width="14" height="8" fill="#c8a84b" rx="1" opacity="0.5"/>
+          <rect x="-48" y="-4" width="14" height="8" fill="#c8a84b" rx="1" opacity="0.5"/>
+          <rect x="-4" y="-48" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5" transform="rotate(45)"/>
+          <rect x="-4" y="-48" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5" transform="rotate(135)"/>
+          <rect x="-4" y="-48" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5" transform="rotate(225)"/>
+          <rect x="-4" y="-48" width="8" height="14" fill="#c8a84b" rx="1" opacity="0.5" transform="rotate(315)"/>
+          <circle r="8" fill="#c8a84b" opacity="0.7"/>
+        </g>
+        <!-- Decorative lines -->
+        <line x1="50" y1="350" x2="350" y2="50" stroke="#c8a84b" stroke-width="0.5" opacity="0.15"/>
+        <line x1="20" y1="300" x2="300" y2="20" stroke="#c8a84b" stroke-width="0.5" opacity="0.1"/>
+        <rect x="30" y="30" width="340" height="340" fill="none" stroke="#c8a84b" stroke-width="0.5" opacity="0.1"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes spin-r { from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
+</style>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Company Profile</p>
+  <h2 class="section-title">会社概要</h2>
+  <div class="about-grid">
+    <div>
+      <div class="about-info">
+        <table>
+  <tr><td>会社名</td><td>トルク株式会社 TORQ Inc.</td></tr>
+  <tr><td>所在地</td><td>〒550-0015 大阪市西区南堀江二丁目7番4号</td></tr>
+  <tr><td>代表者</td><td>代表取締役会長 CEO 檜垣俊行</td></tr>
+  <tr><td>創業</td><td>1926年（大正15年）8月</td></tr>
+  <tr><td>事業内容</td><td>鋲螺・ファスニング製品の国内販売および輸出入</td></tr>
+</table>
+
+<div class="philosophy-box">
+  <p class="section-label" style="margin-bottom:8px;">企業理念</p>
+  <p>
+    私たちは、世界のものづくりに貢献し、豊かで安心できる社会を実現します。<br><br>
+    常に顧客視点で発想し、スピードある行動で期待を超えるサービスを提供します。
+  </p>
+</div>
+        
+    </div>
+    <div>
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.5!2d135.4959!3d34.7024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e68d95e3f543%3A0x8e67a4e82e1a5f72!2z5qCq5byP5Lya56S-5aSn6Ziz5YyX5py65aSa!5e0!3m2!1sja!2sjp!4v1714000000000"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="トルク株式会社 所在地">
+        </iframe>
+        <div class="map-address">
+          📍 〒530-0001 大阪府大阪市北区梅田1丁目1番1号
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label">What We Do</p>
+  <h2 class="section-title">事業内容</h2>
+  <div class="services-grid">
+
+    <div class="service-card">
+  <h3>鋲螺・ファスニング製品販売</h3>
+  <p>
+    六角ボルト・寸切ねじ・六角ナット・ワッシャーなど、
+    豊富な製品ラインナップを提供します。
+  </p>
+</div>
+
+<div class="service-card">
+  <h3>全国14拠点の物流ネットワーク</h3>
+  <p>
+    全国に広がる拠点と倉庫により、
+    スピーディーな供給を実現します。
+  </p>
+</div>
+
+<div class="service-card">
+  <h3>約4,000社の取引ネットワーク</h3>
+  <p>
+    多様な仕入先と連携し、
+    最適な商品を提案します。
+  </p>
+</div>
+
+<div class="service-card">
+  <h3>幅広い分野への供給</h3>
+  <p>
+    工作機械から大型建築物まで、
+    幅広い分野に対応しています。
+  </p>
+</div>
+
+<div class="service-card">
+  <h3>海外調達・輸出入</h3>
+  <p>
+    アジア各国との連携により、
+    安定供給とグローバル対応を実現。
+  </p>
+</div>
+
+  </div>
+</section>
+
+<!-- STRENGTHS -->
+<section id="strengths">
+  <p class="section-label">Why Choose Us</p>
+  <h2 class="section-title">強み・実績</h2>
+  <div class="badges-grid">
+    
+    <div class="badge">
+  <span class="badge-number">14</span>
+  <p class="badge-label">全国拠点ネットワーク</p>
+</div>
+
+<div class="badge">
+  <span class="badge-number">4,000+</span>
+  <p class="badge-label">取引企業数</p>
+</div>
+
+<div class="badge">
+  <span class="badge-number">1926</span>
+  <p class="badge-label">創業年</p>
+</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Get In Touch</p>
+  <h2 class="section-title">お問い合わせ</h2>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <p>製品・サービスに関するご質問、お見積もり依頼、その他ご相談など、お気軽にお問い合わせください。専任担当者が迅速にご回答いたします。</p>
+      <a href="tel:0612345678" class="contact-tel">06-6535-3690</a>
+      <p class="contact-tel-label">平日 9:00〜18:00</p>
+    </div>
+    <form class="contact-form" action="https://formspree.io/f/xzdopwrq" method="POST">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">お名前 *</label>
+          <input type="text" id="name" name="name" placeholder="山田 太郎" required>
+        </div>
+        <div class="form-group">
+          <label for="company">会社名</label>
+          <input type="text" id="company" name="company" placeholder="株式会社〇〇">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">メールアドレス *</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="tel">電話番号</label>
+          <input type="tel" id="tel" name="tel" placeholder="06-0000-0000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="category">お問い合わせ種別</label>
+        <select id="category" name="category">
+          <option value="">選択してください</option>
+          <option value="product">製品・サービスについて</option>
+          <option value="quote">お見積もり依頼</option>
+          <option value="support">サポート・保守について</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">お問い合わせ内容 *</label>
+        <textarea id="message" name="message" placeholder="ご質問・ご要望をご記入ください" required></textarea>
+      </div>
+      <button type="submit" class="btn-submit">送信する →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">TORQUE</span>
+  <div class="footer-info">
+  <div>トルク株式会社 TORQ Inc.</div>
+  <div>〒550-0015 大阪市西区南堀江二丁目7番4号</div>
+  <div>TEL: 06-0000-0000</div>
+</div>
+  <span class="footer-copy">&copy; 2025 TORQUE Co., Ltd. All Rights Reserved.</span>
+</footer>
+
+<script>
+  // Hamburger menu
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#0a0a0a;padding:24px 8%;gap:20px;';
+    }
+  }
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = '送信完了！ありがとうございました';
+    btn.style.background = '#2d8a4e';
+    btn.style.color = '#fff';
+    btn.disabled = true;
+   
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp 0.7s ease forwards';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .badge, .about-grid, .contact-inner').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
